@@ -13,7 +13,7 @@ function Categories() {
     <div className="categories">
       <ul>
         {pizzaCategories.map((value, i) => (
-          <li onClick={() => onClickedCategory(i)} className={activeIndex === i ? 'active' : ''}>
+          <li key={i} onClick={() => onClickedCategory(i)} className={activeIndex === i ? 'active' : ''}>
             {value}
           </li>
         ))}
