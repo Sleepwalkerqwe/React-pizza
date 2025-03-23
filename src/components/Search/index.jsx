@@ -9,7 +9,7 @@ const Search = ({ searchValue, setSearchValue }) => {
     <div className={styles.root}>
       <img className={styles.icon} src={searchIcon} alt="Search logo" />
       <input value={searchValue} onChange={(event) => setSearchValue(event.target.value)} className={styles.input} placeholder="Поиск пиццы..." />;{/*  */}
-      {searchValue && <img onClick={() => setSearchValue('')} className={styles.closeIcon} src={closeIcon} alt="Close logo" />}
+      {searchValue && <img onClick={() => setSearchValue()} className={styles.closeIcon} src={closeIcon} alt="Close logo" />}
     </div>
   );
 };
