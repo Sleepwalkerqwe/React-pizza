@@ -14,6 +14,7 @@ export const SearсhContext = React.createContext();
 // components/PizzaForm.js
 function App() {
   const [searchValue, setSearchValue] = React.useState('');
+
   return (
     <div className="wrapper">
       <SearсhContext.Provider value={{ searchValue, setSearchValue }}>
