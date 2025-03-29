@@ -4,7 +4,7 @@ import Search from './Search';
 import { useSelector } from 'react-redux';
 
 function Header() {
-  const { items, totalPrice } = useSelector((state) => state.cart);
+  const { items, totalPrice } = useSelector((state: { cart: { items: any[]; totalPrice: number } }) => state.cart);
 
   const location = useLocation();
   const pathname = location.pathname;

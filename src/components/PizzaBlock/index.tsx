@@ -5,14 +5,24 @@ import { addPizza } from '../../redux/slices/cartSlice';
 const pizzaTypes = ['тонкое', 'традиционное'];
 const pizzaSizes = ['26см', '30см', '40см'];
 
-function PizzaBlock({ id, title, price, imageUrl, types, sizes }) {
+type PizzaBlockProps = {
+  id: string;
+  title: string;
+  price: number;
+  imageUrl: string;
+  types: number[];
+  sizes: number[];
+  rating: number[];
+};
+
+const PizzaBlock: React.FC<PizzaBlockProps> = ({ id, title, price, imageUrl, types, sizes, rating }) => {
   const dispatch = useDispatch();
 
-  const cartItem = useSelector((state) => state.cart.items.find((obj) => obj.id === id));
+  const cartItem = useSelector((state: { cart: { items: any } }) => state.cart.items.find((obj: { id: string }) => obj.id === id));
 
   const [pizzaCount, setPizzaCount] = React.useState(0);
 
-  const [pizzaSize, setPizzaSize] = React.useState(0);
+  const [pizzaSize, setPizzaSize] = React.useState<number>(0);
 
   const [activeType, setActiveType] = React.useState(0);
   const [activeSize, setActiveSize] = React.useState(0);
@@ -30,7 +40,7 @@ function PizzaBlock({ id, title, price, imageUrl, types, sizes }) {
       price,
       imageUrl,
       type: pizzaTypes[activeType],
-      size: pizzaSize[activeSize],
+      size: pizzaSizes[activeSize],
     };
     onClickAddButton();
     dispatch(addPizza(item));
@@ -73,6 +83,6 @@ function PizzaBlock({ id, title, price, imageUrl, types, sizes }) {
       </div>
     </div>
   );
-}
+};
 
 export default PizzaBlock;
