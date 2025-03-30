@@ -19,7 +19,7 @@ export const sortList: SortListItem[] = [
 
 function Sort() {
   const dispatch = useDispatch();
-  const sort = useSelector((state: { filterReducer: { sort: any } }) => state.filterReducer.sort);
+  const sort = useSelector((state: { filterReducer: { sort: { name: string; sortProperty: string } } }) => state.filterReducer.sort);
 
   const sortRef = React.useRef<HTMLDivElement>(null);
 
