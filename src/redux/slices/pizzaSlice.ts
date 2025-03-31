@@ -1,7 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const fetchPizzas = createAsyncThunk('pizza/fetchPizzasStatus', async (params) => {
+import { SortPropertyEnum } from './filterSlice';
+
+export type PizzasItemParams = { category: string; sortBy: string; order: string; search: string; currentPage: number };
+// type PizzasItemParams = Record<string, string>;
+
+export const fetchPizzas = createAsyncThunk('pizza/fetchPizzasStatus', async (params: PizzasItemParams) => {
   const { category, sortBy, order, search, currentPage } = params;
   const url = new URL(`https://67dc1e101fd9e43fe47746ea.mockapi.io/items?page=${currentPage}&limit=4`);
 
@@ -11,15 +16,35 @@ export const fetchPizzas = createAsyncThunk('pizza/fetchPizzasStatus', async (pa
 
   url.searchParams.append('title', search); // search parameter search = search | title = search
 
-  const { data } = await axios.get(url);
-  console.log(data);
+  const { data } = await axios.get<PizzaItem[]>(`${url}`);
 
-  return data;
+  return data as PizzaItem[];
 });
 
-const initialState = {
+export type PizzaItem = {
+  id: string;
+  title: string;
+  price: number;
+  imageUrl: string;
+  types: number[];
+  sizes: number[];
+  rating: number[];
+};
+
+export enum Status {
+  LOADING = 'loading',
+  SUCCESS = 'success',
+  ERROR = 'error',
+}
+
+interface PizzaSliceState {
+  items: PizzaItem[];
+  status: Status;
+}
+
+export const initialState: PizzaSliceState = {
   items: [],
-  status: 'loading', // loading | success | error
+  status: Status.LOADING, // loading | success | error
 };
 
 const pizzaSlice = createSlice({
@@ -34,18 +59,15 @@ const pizzaSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchPizzas.pending, (state) => {
       state.items = [];
-      state.status = 'loading';
-      // action is inferred correctly here if using TS
+      state.status = Status.LOADING;
     });
     builder.addCase(fetchPizzas.fulfilled, (state, action) => {
       state.items = action.payload;
-      state.status = 'success';
-      // action is inferred correctly here if using TS
+      state.status = Status.SUCCESS;
     });
     builder.addCase(fetchPizzas.rejected, (state) => {
       state.items = [];
-      state.status = 'error';
-      // action is inferred correctly here if using TS
+      state.status = Status.ERROR;
     });
   },
 });

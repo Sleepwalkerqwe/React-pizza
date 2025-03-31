@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { addPizza, removePizza, minusItem } from '../redux/slices/cartSlice';
 
-type CartItemProps = { id: string; title: string; type: string; size: number; price: number; count: number; imageUrl: string };
+type CartItemProps = { id: string; title: string; type: string; size: string; price: number; count: number; imageUrl: string };
 
 const CartItem: React.FC<CartItemProps> = ({ id, title, type, size, price, count, imageUrl }) => {
   const dispatch = useDispatch();
@@ -11,6 +11,12 @@ const CartItem: React.FC<CartItemProps> = ({ id, title, type, size, price, count
     dispatch(
       addPizza({
         id,
+        title,
+        price,
+        imageUrl,
+        type, // Или другое значение
+        size, // Или другое значение
+        count: count + 1, // Увеличиваем количество
       })
     );
   };
