@@ -24,10 +24,11 @@ const Home: React.FC = () => {
 
   const { items, status } = useSelector((state: { pizza: { items: []; status: Status } }) => state.pizza);
 
-  const onChangeCategory = (id: number) => {
+  const onChangeCategory = React.useCallback((id: number) => {
     console.log(id);
     dispatch(setCategoryId(id));
-  };
+  }, []);
+
   const onChangePage = (number: number) => {
     dispatch(setCurrentPage(number));
   };
@@ -73,7 +74,7 @@ const Home: React.FC = () => {
     isSearch.current = false;
   }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
-  const pizzas = items.map((obj: PizzaItem) => <PizzaBlock {...obj} />);
+  const pizzas = items.map((obj: PizzaItem) => <PizzaBlock key={obj.id} {...obj} />);
 
   const skeletons = [...new Array(10)].map((_, index) => <Skeleton key={index} />);
 
@@ -81,7 +82,7 @@ const Home: React.FC = () => {
     <div className="container">
       <div className="content__top">
         <Categories categoryValue={categoryId} onClickCategory={(id) => onChangeCategory(id)} />
-        <Sort />
+        <Sort value={sort} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       {status === 'error' ? (

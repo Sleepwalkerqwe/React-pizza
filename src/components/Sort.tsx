@@ -8,6 +8,10 @@ type SortListItem = {
   sortProperty: SortPropertyEnum;
 };
 
+type SortPopupPorps = {
+  value: Sort;
+};
+
 export const sortList: SortListItem[] = [
   { name: 'популярности (DESC)', sortProperty: SortPropertyEnum.RATING_DESC },
   { name: 'популярности (ASC)', sortProperty: SortPropertyEnum.RATING_ASC },
@@ -17,9 +21,8 @@ export const sortList: SortListItem[] = [
   { name: 'алфавиту (ASC)', sortProperty: SortPropertyEnum.TITLE_ASC },
 ];
 
-function SortPopup() {
+const SortPopup: React.FC<SortPopupPorps> = React.memo(({ value }) => {
   const dispatch = useDispatch();
-  const sort = useSelector((state: { filterReducer: { sort: { name: string; sortProperty: 'rating' } } }) => state.filterReducer.sort);
 
   const sortRef = React.useRef<HTMLDivElement>(null);
 
@@ -51,13 +54,13 @@ function SortPopup() {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setOpen(!open)}>{sort.name}</span>
+        <span onClick={() => setOpen(!open)}>{value.name}</span>
       </div>
       {open && (
         <div className="sort__popup">
           <ul>
             {sortList.map((obj, i) => (
-              <li key={i} onClick={() => onClickListItem(obj)} className={sort.sortProperty === obj.sortProperty ? 'active' : ''}>
+              <li key={i} onClick={() => onClickListItem(obj)} className={value.sortProperty === obj.sortProperty ? 'active' : ''}>
                 {obj.name}
               </li>
             ))}
@@ -66,6 +69,6 @@ function SortPopup() {
       )}
     </div>
   );
-}
+});
 
 export default SortPopup;
